@@ -1,0 +1,169 @@
+#include <stdio.h>
+
+void printarMatriz(int m, int n, char matriz[m][n])
+{
+    for(int i = 0; i < m; i++)
+    {
+        for(int j = 0; j < n; j++)
+        {
+            printf("%5c ", matriz[i][j]);
+        }
+        printf("\n\n");
+    }
+}
+
+char ganhador(int m, int n, char jogador, char matriz[m][n])
+{
+    // Linhas
+    if(
+        (matriz[0][0] == jogador &&
+         matriz[0][1] == jogador &&
+         matriz[0][2] == jogador)
+
+        ||
+
+        (matriz[1][0] == jogador &&
+         matriz[1][1] == jogador &&
+         matriz[1][2] == jogador)
+
+        ||
+
+        (matriz[2][0] == jogador &&
+         matriz[2][1] == jogador &&
+         matriz[2][2] == jogador)
+
+        ||
+
+        // Colunas
+        (matriz[0][0] == jogador &&
+         matriz[1][0] == jogador &&
+         matriz[2][0] == jogador)
+
+        ||
+
+        (matriz[0][1] == jogador &&
+         matriz[1][1] == jogador &&
+         matriz[2][1] == jogador)
+
+        ||
+
+        (matriz[0][2] == jogador &&
+         matriz[1][2] == jogador &&
+         matriz[2][2] == jogador)
+
+        ||
+
+        // Diagonal principal
+        (matriz[0][0] == jogador &&
+         matriz[1][1] == jogador &&
+         matriz[2][2] == jogador)
+
+        ||
+
+        // Diagonal secundária
+        (matriz[0][2] == jogador &&
+         matriz[1][1] == jogador &&
+         matriz[2][0] == jogador)
+    )
+    {
+        return jogador;
+    }
+
+    return '\0';
+}
+
+int main()
+{
+    int opcao;
+
+    printf("\n\nErnesto Herwig Sigma\n\n");
+    printf("Escolha seu modo de jogo: ");
+    scanf("%d", &opcao);
+
+    switch(opcao)
+    {
+        case 1:
+        {
+            printf("\n\n");
+            printf("Bem-vindo ao jogo da velha                    ");
+            printf("Obs: A jogatina eh melhor com 2 jogadores...\n\n\n");
+
+            char Mjogodavelha[3][3];
+            int linha, coluna;
+            char jogador = 'X';
+
+            // Inicializa a matriz
+            for(int i = 0; i < 3; i++)
+            {
+                for(int j = 0; j < 3; j++)
+                {
+                    Mjogodavelha[i][j] = '*';
+                }
+            }
+
+            printarMatriz(3, 3, Mjogodavelha);
+
+            do
+            {
+                printf("\n\n");
+                printf("Jogador %c, digite a linha e coluna: ", jogador);
+                
+                scanf("%d %d", &linha, &coluna);
+
+                printf("\n\n");
+                
+                // Verifica se a posição está dentro da matriz
+                if(linha >= 0 && linha < 3 &&
+                   coluna >= 0 && coluna < 3)
+                {
+                    // Verifica se a posição está vazia
+                    if(Mjogodavelha[linha][coluna] == '*')
+                    {
+                        // Coloca X ou O
+                        Mjogodavelha[linha][coluna] = jogador;
+
+                        printarMatriz(3, 3, Mjogodavelha);
+
+                        // Verifica se alguém ganhou
+                        if(ganhador(3, 3, jogador, Mjogodavelha) == jogador)
+                        {
+                            printf("\nJogador %c ganhou!\n", jogador);
+                            break;
+                        }
+
+                        // Troca o jogador
+                        if(jogador == 'X')
+                        {
+                            jogador = 'O';
+                        }
+                        else
+                        {
+                            jogador = 'X';
+                        }
+                    }
+                    else
+                    {
+                        printf("Essa posicao ja esta ocupada. Tente novamente...\n");
+                    }
+                }
+                else
+                {
+                    printf("Posicao invalida! Use valores de 0 a 2.\n");
+                }
+
+            } while(ganhador != '\0');
+
+            break;
+        }
+
+        case 2:
+            printf("Bem-vindo ao Mines\n");
+            break;
+
+        default:
+            printf("Bitte versuch nochmal\n");
+            break;
+    }
+
+    return 0;
+}
